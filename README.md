@@ -1,8 +1,8 @@
 🌟 Go Grid Challenge: The Max Sum Quest 🌟
-Embark on an exhilarating journey through a world of numbers! In this Go Grid Challenge, your mission is to navigate a square grid and unearth the path that boasts the highest sum. But remember, your adventure is bound by the laws of the grid – you may only traverse a single row, column, or diagonal. Speed and efficiency are your allies in this quest, as you strive for an algorithmic solution with O(n) complexity.
+Embark on an exhilarating journey through a world of numbers! In this Go Grid Challenge, your mission is to navigate a square grid and unearth the path that boasts the highest sum. But remember, your adventure is bound by the laws of the grid – you may only traverse a single row or column. Speed and efficiency are your allies in this quest, as you strive for an algorithmic solution with O(n) complexity.
 
 🧭 The Challenge
-You are presented with a grid, a square of numbers, each holding secrets to untold riches. Your challenge is to devise a Go program that can uncover the highest sum possible within the confines of a single row, column, or diagonal.
+You are presented with a grid, a square of numbers, each holding secrets to untold riches. Your challenge is to devise a Go program that can uncover the highest sum possible within the confines of a single row or column.
 
 The Grid's Law
 Square Grid: The grid you will encounter is always a square, ranging in size from 2x2 to 50x50 cells.
@@ -19,6 +19,7 @@ Test for Efficiency: Ensure your solution not only passes the test cases but als
 To ensure a fair and organized quest:
 Naming Your Solution
 Unique File Names: Title your solution file as **[name]_solution.go**.
+  - Repalace [name] with your name
 Respect the Code: Do not alter the original template or other participants' submissions.
 
 Submitting Your Work
