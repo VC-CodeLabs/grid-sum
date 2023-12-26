@@ -6,7 +6,7 @@ You are presented with a grid, a square of numbers, each holding secrets to unto
 
 The Grid's Law
 Square Grid: The grid you will encounter is always a square, ranging in size from 2x2 to 50x50 cells.
-Single Path: Your journey must be confined to a single row, column, or diagonal of the grid.
+Single Path: Your journey must be confined to a single row or column of the grid.
 Optimize Your Journey: Seek efficiency in your algorithm. Aim for a time complexity of O(n).
 
 🏁 Getting Started
