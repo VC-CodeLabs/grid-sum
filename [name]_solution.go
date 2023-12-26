@@ -15,31 +15,28 @@ func findMaxSum(grid Grid) int {
 
 // main function to test the findMaxSum function
 func main() {
-    // Example grids for testing
+	// Example grids for testing
+	grids := []Grid{
+		{ // Grid 1 - Max Sum Expected: 53
+			{3, 6, 7},
+			{5, 1, 42},
+			{9, 14, 4},
+		},
+		{ // Grid 2 - Max Sum Expected 59
+			{1, 1, 3, 1},
+			{40, 6, 3, 10},
+			{7, 3, 11, 10},
+			{2, 0, 0, 16},
+		},
+		{  // Grid 3 - Max Sum Expected - 7
+			{1, 2},
+			{3, 4},
+		},
+	}
 
-    // Grid 1
-    grid1 := Grid{
-        {3, 6, 7},
-        {5, 1, 42},
-        {9, 14, 4},
-    }
-
-    // Grid 2
-    grid2 := Grid{
-        {1, 1, 3, 1},
-        {40, 6, 3, 10},
-        {7, 3, 11, 10},
-        {2, 0, 0, 16},
-    }
-
-    // Grid 3
-    grid3 := Grid{
-        {1, 2},
-        {3, 4},
-    }
-
-    // Test example each grids
-    fmt.Printf("Max sum for Grid 1: %d (Expected: 53)\n", findMaxSum(grid1))
-    fmt.Printf("Max sum for Grid 2: %d (Expected: 59)\n", findMaxSum(grid2))
-    fmt.Printf("Max sum for Grid 3: %d (Expected: 7)\n", findMaxSum(grid3))
+	// Run the function for each grid and measure the time
+	for i, grid := range grids {
+		result := findMaxSum(grid)
+		fmt.Printf("Max sum for Grid %d: %d\n", i+1, result)
+	}
 }
