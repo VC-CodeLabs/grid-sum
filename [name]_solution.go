@@ -5,10 +5,10 @@ import "fmt"
 // Grid represents the 2D grid of integers
 type Grid [][]int
 
-// findMaxSum finds the maximum sum of a single row, column, or diagonal in the grid
+// findMaxSum finds the maximum sum of a single row or column
 func findMaxSum(grid Grid) int {
     // TODO: Implement the algorithm to find the maximum sum
-    // Remember to consider all rows, columns, and diagonals
+    // Remember to consider all rows and columns
 
     return 0 // Placeholder return. Update this with your logic.
 }
@@ -39,7 +39,7 @@ func main() {
     }
 
     // Test example each grids
-    fmt.Printf("Max sum for Grid 1: %d (Expected: 56)\n", findMaxSum(grid1))
+    fmt.Printf("Max sum for Grid 1: %d (Expected: 53)\n", findMaxSum(grid1))
     fmt.Printf("Max sum for Grid 2: %d (Expected: 59)\n", findMaxSum(grid2))
-    fmt.Printf("Max sum for Grid 3: %d (Expected: 6)\n", findMaxSum(grid3))
+    fmt.Printf("Max sum for Grid 3: %d (Expected: 7)\n", findMaxSum(grid3))
 }
