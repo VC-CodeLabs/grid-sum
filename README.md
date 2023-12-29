@@ -36,3 +36,22 @@ Efficiency: Does your solution run faster than other submissions?
 
 📊 Leaderboard
 Heroes who demonstrate exceptional skill in both correctness and efficiency will be celebrated on our leaderboard. Will you rise to the top?
+
+
+SUPPORT
+- You may run into an issue using a VC machine when trying to run the Go application locally.  To get around the issue you can follow the following steps.
+
+- Create a TMP directory in your VC users folder under projects
+- Add an environment variable to tell Go to use the specified TMP directory
+
+- To specify a specific temporary directory for Go to use when building and running your program, you can set the GOTMPDIR environment variable. This variable allows you to override the default temporary directory.
+
+In PowerShell, you can set the GOTMPDIR environment variable before running your Go program. Here's an example:
+
+powershell
+Copy code
+$env:GOTMPDIR = "C:\path\to\your\desired\temp\directory"
+go run .\ababich_solution.go
+Replace "C:\path\to\your\desired\temp\directory" with the actual path you want to use as the temporary directory.
+
+This will instruct Go to use the specified directory for temporary files during the build and execution process. Keep in mind that you need to set this environment variable each time you run your Go program, or you can set it globally for your user account if you want it to apply to all Go projects.
