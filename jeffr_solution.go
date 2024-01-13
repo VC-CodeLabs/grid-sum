@@ -5,48 +5,68 @@ import "fmt"
 // Grid represents the 2D grid of integers
 type Grid [][]int
 
+type IndexType string
+var Index = struct {
+	ROW IndexType
+	COL IndexType
+}{
+	ROW: "row",
+	COL: "col",
+}
+
+var max = -1
+var maxIndexType = Index.ROW
+var maxIndex = -1
+
+func checkRowSum(grid Grid, r int, cols int) {
+
+	var sum = 0;
+	for c := 0; c < cols; c++ {
+		sum += grid[r][c]
+	}
+
+	if sum > max { 
+		max = sum
+		maxIndexType = Index.ROW
+		maxIndex = r
+	}
+
+}
+
+func checkColSum(grid Grid, c int, rows int) {
+
+	var sum = 0;
+	for r := 0; r < rows; r++ {
+		sum += grid[r][c]
+	}
+
+	if sum > max { 
+		max = sum
+		maxIndexType = Index.COL
+		maxIndex = c
+	}
+
+}
+
 // findMaxSum finds the maximum sum of a single row or column
 func findMaxSum(grid Grid) int {
+	max = -1;
+	maxIndex = -1;
+	
     // Remember to consider all rows and columns
 	var rows = len(grid)
 	var cols = len(grid[0])
-
-	var max = -1;
-	var maxrow = -1;
 	
 	for r := 0; r < rows; r++ {
-		var sum = 0;
-		for c := 0; c < cols; c++ {
-			sum += grid[r][c]
-		}
-
-		if sum > max { 
-			max = sum
-			maxrow = r
-		}
+		checkRowSum(grid, r, cols)
 	}
-
-	var maxcol = -1;
 
 	for c := 0; c < cols; c++ {
-		var sum = 0;
-		for r := 0; r < rows; r++ {
-			sum += grid[r][c]
-		}
-
-		if sum > max { 
-			max = sum
-			maxcol = c
-		}
+		checkColSum(grid, c, rows)
 	}
 
-	// fmt.print( "max value %d in %s %d", max, maxcol >= 0 ? "column" : "row", maxcol >= 0 ? maxcol : maxrow )
-	if maxcol >= 0 {
-		fmt.Printf( "max value %d in col %d\n", max, maxcol )
-	} else {
-		fmt.Printf( "max value %d in row %d\n", max, maxrow )
-	}
-
+	fmt.Printf( "max value %d in %s %d\n", max, maxIndexType, maxIndex )
+	
     return max // Placeholder return. Update this with your logic.
 }
 
