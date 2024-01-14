@@ -2,6 +2,7 @@ package main
 
 import "fmt"
 import "sync"
+import "time"
 
 // Grid represents the 2D grid of integers
 type Grid [][]int
@@ -111,9 +112,29 @@ func main() {
 		},
 	}
 
-	// Run the function for each grid and measure the time
-	for i, grid := range grids {
-		result := findMaxSum(grid)
-		fmt.Printf("Max sum for Grid %d: %d\n", i+1, result)
+	fatDim := 100;
+
+	fatGrid := make(Grid,fatDim)
+	
+	fatValue := 0
+	for fr := 0; fr < fatDim; fr++ {
+		fatGrid[fr] = make([]int, fatDim)
+		for fc := 0; fc < fatDim; fc++ {
+			fatGrid[fr][fc] = fatValue
+			fatValue++
+		}
 	}
+
+	grids = append( grids, fatGrid)
+
+	// Run the function for each grid and measure the time
+	ts := time.Now()
+	for i, grid := range grids {
+		s := time.Now()
+		result := findMaxSum(grid)
+		d := time.Since(s);
+		fmt.Printf("Max sum for Grid %d: %d in %s\n", i+1, result, d)
+	}
+	td := time.Since(ts)
+	fmt.Printf("total time %s\n", td)
 }
