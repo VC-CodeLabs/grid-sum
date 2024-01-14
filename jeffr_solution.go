@@ -1,6 +1,7 @@
 package main
 
 import "fmt"
+import "sync"
 
 // Grid represents the 2D grid of integers
 type Grid [][]int
@@ -14,9 +15,14 @@ var Index = struct {
 	COL: "col",
 }
 
-var max = -1
-var maxIndexType = Index.ROW
-var maxIndex = -1
+var (
+	mu sync.Mutex
+	max int
+	maxIndexType IndexType
+	maxIndex int
+)
+
+var wg sync.WaitGroup
 
 func checkRowSum(grid Grid, r int, cols int) {
 
@@ -25,11 +31,15 @@ func checkRowSum(grid Grid, r int, cols int) {
 		sum += grid[r][c]
 	}
 
+	mu.Lock()
 	if sum > max { 
 		max = sum
 		maxIndexType = Index.ROW
 		maxIndex = r
 	}
+	mu.Unlock()
+
+	wg.Done()
 
 }
 
@@ -40,30 +50,40 @@ func checkColSum(grid Grid, c int, rows int) {
 		sum += grid[r][c]
 	}
 
+	mu.Lock()
 	if sum > max { 
 		max = sum
 		maxIndexType = Index.COL
 		maxIndex = c
 	}
+	mu.Unlock()
+
+	wg.Done()
 
 }
 
 // findMaxSum finds the maximum sum of a single row or column
 func findMaxSum(grid Grid) int {
+	mu.Lock()
 	max = -1;
 	maxIndex = -1;
-	
+	mu.Unlock()
+
     // Remember to consider all rows and columns
 	var rows = len(grid)
 	var cols = len(grid[0])
 	
 	for r := 0; r < rows; r++ {
+		wg.Add(1)
 		checkRowSum(grid, r, cols)
 	}
 
 	for c := 0; c < cols; c++ {
+		wg.Add(1)
 		checkColSum(grid, c, rows)
 	}
+
+	wg.Wait()
 
 	fmt.Printf( "max value %d in %s %d\n", max, maxIndexType, maxIndex )
 	
