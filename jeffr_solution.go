@@ -5,6 +5,10 @@ import "sync"
 import "time"
 import "math"
 
+var multithreaded = true
+var includeFatGrid = false
+var fatDim = 100000
+
 // Grid represents the 2D grid of integers
 type Grid [][]int
 
@@ -33,15 +37,20 @@ func checkRowSum(grid Grid, r int, cols int) {
 		sum += grid[r][c]
 	}
 
-	mu.Lock()
+	if multithreaded {
+		mu.Lock()
+	}
+
 	if sum > max { 
 		max = sum
 		maxIndexType = Index.ROW
 		maxIndex = r
 	}
-	mu.Unlock()
 
-	wg.Done()
+	if multithreaded {
+		mu.Unlock()
+		wg.Done()
+	}
 
 }
 
@@ -52,42 +61,64 @@ func checkColSum(grid Grid, c int, rows int) {
 		sum += grid[r][c]
 	}
 
-	mu.Lock()
+	if multithreaded {
+		mu.Lock()
+	}
+
 	if sum > max { 
 		max = sum
 		maxIndexType = Index.COL
 		maxIndex = c
 	}
-	mu.Unlock()
 
-	wg.Done()
+	if multithreaded {
+		mu.Unlock()
+		wg.Done()
+	}
 
 }
 
 // findMaxSum finds the maximum sum of a single row or column
 func findMaxSum(grid Grid) int {
-	mu.Lock()
+
+	if multithreaded {
+		mu.Lock()
+	}
+
 	max = math.MinInt
 	maxIndex = -1
-	mu.Unlock()
+
+	if multithreaded {
+		mu.Unlock()
+	}
 
     // Remember to consider all rows and columns
 	var rows = len(grid)
 	var cols = len(grid[0])
 	
 	for r := 0; r < rows; r++ {
-		wg.Add(1)
-		checkRowSum(grid, r, cols)
+		if multithreaded {
+			wg.Add(1)
+			go checkRowSum(grid, r, cols)
+		} else {
+			checkRowSum(grid, r, cols)
+		}
 	}
 
 	for c := 0; c < cols; c++ {
-		wg.Add(1)
-		checkColSum(grid, c, rows)
+		if multithreaded {
+			wg.Add(1)
+			go checkColSum(grid, c, rows)
+		} else {
+			checkColSum(grid, c, rows)
+		}
 	}
 
-	wg.Wait()
+	if multithreaded {
+		wg.Wait()
+	}
 
-	fmt.Printf( "max value %d in %s %d\n", max, maxIndexType, maxIndex )
+	fmt.Printf( "max sum = %d in %dx%d %s %d\n", max, rows, cols, maxIndexType, maxIndex )
 	
     return max // Placeholder return. Update this with your logic.
 }
@@ -113,27 +144,38 @@ func main() {
 		},
 	}
 
-	fatDim := 100;
+	fmt.Printf("multithreaded: %t\nincludeFatGrid: %t\n", multithreaded, includeFatGrid)
 
-	fatGrid := make(Grid,fatDim)
-	
-	fatValue := 0
-	for fr := 0; fr < fatDim; fr++ {
-		fatGrid[fr] = make([]int, fatDim)
-		for fc := 0; fc < fatDim; fc++ {
-			fatGrid[fr][fc] = fatValue
-			fatValue++
+	if includeFatGrid {
+
+		fmt.Printf("assembling %dx%d fat grid...\n", fatDim, fatDim)
+		fgs := time.Now()
+
+		fatGrid := make(Grid,fatDim)
+		
+		fatValue := 0
+		for fr := 0; fr < fatDim; fr++ {
+			fatGrid[fr] = make([]int, fatDim)
+			for fc := 0; fc < fatDim; fc++ {
+				fatGrid[fr][fc] = fatValue
+				fatValue++
+			}
 		}
-	}
 
-	grids = append( grids, fatGrid)
+		grids = append( grids, fatGrid)
+
+		fgd := time.Since(fgs)
+		fmt.Printf("...fat grid assembled in %s\n", fgd)
+	}
 
 	// Run the function for each grid and measure the time
 	ts := time.Now()
 	for i, grid := range grids {
+
 		s := time.Now()
 		result := findMaxSum(grid)
 		d := time.Since(s);
+
 		fmt.Printf("Max sum for Grid %d: %d in %s\n", i+1, result, d)
 	}
 	td := time.Since(ts)
