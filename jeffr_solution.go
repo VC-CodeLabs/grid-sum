@@ -3,6 +3,7 @@ package main
 import "fmt"
 import "sync"
 import "time"
+import "math"
 
 // Grid represents the 2D grid of integers
 type Grid [][]int
@@ -66,8 +67,8 @@ func checkColSum(grid Grid, c int, rows int) {
 // findMaxSum finds the maximum sum of a single row or column
 func findMaxSum(grid Grid) int {
 	mu.Lock()
-	max = -1;
-	maxIndex = -1;
+	max = math.MinInt
+	maxIndex = -1
 	mu.Unlock()
 
     // Remember to consider all rows and columns
